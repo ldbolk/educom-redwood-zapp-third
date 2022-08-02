@@ -9,7 +9,7 @@ const KlantsLayout = ({ children }) => {
       <header className="rw-header">
         <h1 className="rw-heading rw-heading-primary">
           <Link to={routes.klanten()} className="rw-link">
-            Klants
+            Klanten
           </Link>
         </h1>
 

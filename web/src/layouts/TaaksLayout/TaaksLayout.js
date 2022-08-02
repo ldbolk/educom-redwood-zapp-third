@@ -9,7 +9,7 @@ const TaaksLayout = ({ children }) => {
       <header className="rw-header">
         <h1 className="rw-heading rw-heading-primary">
           <Link to={routes.taken()} className="rw-link">
-            Taaks
+            Taken
           </Link>
         </h1>
 

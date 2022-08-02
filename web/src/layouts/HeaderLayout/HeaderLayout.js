@@ -32,3 +32,6 @@ const HeaderLayout = ({ children }) => {
 }
 
 export default HeaderLayout
+
+
+// Add checks for login to show taken en klanten options

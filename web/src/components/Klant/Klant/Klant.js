@@ -49,7 +49,7 @@ const Klant = ({ klant }) => {
   const [deleteKlant] = useMutation(DELETE_KLANT_MUTATION, {
     onCompleted: () => {
       toast.success('Klant deleted')
-      navigate(routes.klants())
+      navigate(routes.klanten())
     },
     onError: (error) => {
       toast.error(error.message)
