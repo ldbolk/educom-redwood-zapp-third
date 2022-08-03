@@ -67,7 +67,7 @@ const Klant = ({ klant }) => {
       <div className="rw-segment">
         <header className="rw-segment-header">
           <h2 className="rw-heading rw-heading-secondary">
-            Klant {klant.id} Detail
+            {klant.naam}'s Details
           </h2>
         </header>
 

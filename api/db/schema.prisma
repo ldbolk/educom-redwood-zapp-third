@@ -15,6 +15,7 @@ model Klant {
   postcode                  String
   woonplaats                String
   taken                     Taak[]
+  bezoeken                  Bezoek[]
 }
 
 model Taak {
@@ -32,6 +33,18 @@ model User {
   salt                      String
   resetToken                String?
   resetTokenExpiresAt       DateTime?
+  bezoeken                  Bezoek[]
+}
+
+model Bezoek {
+  id                        Int @id @default(autoincrement())
+  klantId                   Int
+  userId                    Int
+  klant                     Klant @relation(fields:[klantId], references: [id])
+  medewerker                User @relation(fields:[userId], references: [id])
+  start                     DateTime
+  end                       DateTime
+
 }
 
 
