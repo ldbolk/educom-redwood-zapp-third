@@ -1,23 +1,35 @@
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
+import { useState } from 'react'
 
 import BezoekCell from 'src/components/BezoekCell';
+import BezoekForm from 'src/components/BezoekForm';
+import BezoekFormCell from 'src/components/BezoekFormCell';
 
+import Modal from 'react-modal'
 import React from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction';
 
+
+
 const handleDateClick = (arg) => {
-  console.log('woo')
-  alert(arg.title)
+  console.log(arg)
 }
 
 const HomePage = () => {
 
+  const[modalOpen, setModalOpen] = useState(false);
+
+  const onEventAdded = event => {
+    let calendarApi = calendarRef.current.getApi();
+    calendarApi.addEvent(event)
+  }
+
   return (
     <>
-      <button>Bezoek toevoegen</button>
+      <button onClick={() => setModalOpen}>Bezoek toevoegen</button>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -26,7 +38,8 @@ const HomePage = () => {
         ]}
         dateClick={handleDateClick}
       />
-      <BezoekCell/>
+
+      <BezoekFormCell/>
 
 
     </>
