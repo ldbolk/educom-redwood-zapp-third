@@ -26,4 +26,9 @@ export const schema = gql`
     start: DateTime
     end: DateTime
   }
+
+  type Mutation {
+    createBezoek(input: CreateBezoekInput!): Bezoek! @requireAuth
+    deleteBezoek(id: Int!): Bezoek! @requireAuth
+  }
 `

@@ -10,6 +10,18 @@ export const bezoek = ({ id }) => {
   })
 }
 
+export const createBezoek = ({ input }) => {
+  return db.bezoek.create({
+    data: input
+  })
+}
+
+export const deleteBezoek = ({ id }) => {
+  return db.bezoek.delete({
+    where: { id }
+  })
+}
+
 export const Bezoek = {
   klant: (_obj, { root }) =>
     db.bezoek.findUnique({ where: { id: root.id } }).klant(),
