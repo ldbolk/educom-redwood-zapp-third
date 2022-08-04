@@ -23,6 +23,7 @@ model Taak {
   taak                      String
   extra                     String?
   klanten                   Klant[]
+  bezoeken                  Bezoek[]
 }
 
 model User {
@@ -42,8 +43,10 @@ model Bezoek {
   userId                    Int
   klant                     Klant @relation(fields:[klantId], references: [id])
   medewerker                User @relation(fields:[userId], references: [id])
+  taken                     Taak[]
   start                     DateTime
   end                       DateTime
+
 
 }
 

@@ -8,6 +8,9 @@ import {
   FormError
 } from '@redwoodjs/forms'
 
+import React from 'react'
+import Modal from 'react-modal'
+
 const CREATE_BEZOEK_MUTATION = gql`
   mutation CreateBezoekMutation($input: CreateBezoekInput!) {
     createBezoek(input: $input) {
@@ -38,53 +41,58 @@ const CREATE_BEZOEK_MUTATION = gql`
 
 
 klant-medewerker-start-end
-const BezoekForm = ({taken, klanten, medewerkers}) => {
-  const [createBezoek, {loading, error}] = useMutation(CREATE_BEZOEK_MUTATION)
-  const onSubmit = (input) => {
-    console.log(input)
-    // createBezoek({variables: { input }})
-  }
 
-  return (
-    <div>
-      <h3>Plan een bezoek in</h3>
-      <Form onSubmit={onSubmit}>
-        <FormError error={error}/>
+export default function({isOpen, onClose, onEventAdded}) {
 
-        <Label name="klant">
-          Klant
-        </Label>
-        <SelectField name="klant" validation={{ required: true }}>
-          {klanten.map((num) => (
-            <option key={num.id}>{num.naam}, {num.adres}</option>
-          ))}
-        </SelectField>
+  const BezoekForm = ({taken, klanten, medewerkers}) => {
+    const [createBezoek, {loading, error}] = useMutation(CREATE_BEZOEK_MUTATION)
+      const onSubmit = (input) => {
+        console.log(input)
+        // createBezoek({variables: { input }})
+      }
 
+      return (
+        <Modal isOpen={isOpen} onRequestClose={onClose}>
 
-        <Label name="medewerker">
-          Medewerker
-        </Label>
-        <SelectField name="medewerker" multiple={true} validation={{ required: true }}>
-            {medewerkers.map((num) => (
-              <option key={num.id}>{num.name}, {num.email}</option>
-            ))}
-        </SelectField>
+        <div>
+          <h3>Plan een bezoek in</h3>
+          <Form onSubmit={onSubmit}>
+            <FormError error={error}/>
+
+            <Label name="klant">
+              Klant
+            </Label>
+            <SelectField name="klant" validation={{ required: true }}>
+              {klanten.map((num) => (
+                <option key={num.id}>{num.naam}, {num.adres}</option>
+              ))}
+            </SelectField>
 
 
-        <Label name="start">
-          Start tijd
-        </Label>
+            <Label name="medewerker">
+              Medewerker
+            </Label>
+            <SelectField name="medewerker" multiple={true} validation={{ required: true }}>
+                {medewerkers.map((num) => (
+                  <option key={num.id}>{num.name}, {num.email}</option>
+                ))}
+            </SelectField>
+
+
+            <Label name="start">
+              Start tijd
+            </Label>
 
 
 
-        <Label name="end">
-          Eind tijd
-        </Label>
+            <Label name="end">
+              Eind tijd
+            </Label>
 
 
-      </Form>
-    </div>
-  )
-}
+          </Form>
+        </div>
+      </Modal>
+  )}}
 
-export default BezoekForm
+// export default BezoekForm

@@ -17,6 +17,7 @@ const HomePage = () => {
 
   return (
     <>
+      <button>Bezoek toevoegen</button>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
