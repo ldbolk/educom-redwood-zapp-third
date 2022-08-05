@@ -7,7 +7,7 @@ const BezoekPage = () => {
     <>
       <MetaTags title="Bezoek" description="Bezoek page" />
 
-      <h1>BezoekPage</h1>
+      <h1>Plan een nieuw bezoek in</h1>
 
 
       <BezoekFormCell/>

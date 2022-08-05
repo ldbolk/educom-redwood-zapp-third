@@ -1,4 +1,4 @@
-import { Form, Label, Submit, SelectField, CheckboxField, FormError } from '@redwoodjs/forms'
+import { Form, Label, Submit, SelectField, CheckboxField, FormError, DatetimeLocalField } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
 import React, { useState } from 'react'
@@ -54,18 +54,18 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
   return (
 
     <div>
-      <h3>Plan een bezoek in</h3>
       <Form onSubmit={onSubmit}>
         <FormError error={error}/>
 
         <Label name="klant">
           Klant
         </Label>
-        <SelectField name="klant" validation={{ required: true }}>
+        <SelectField name="klant" validation={{ required: true}}>
           {klanten.map((num) => (
-            <option key={num.id}>{num.naam}, {num.adres}</option>
+            <option key={num.id} value={num}>{num.naam}</option>
           ))}
         </SelectField>
+        <br/>
 
 
         <Label name="medewerker">
@@ -73,32 +73,43 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
         </Label>
         <SelectField name="medewerker" validation={{ required: true }}>
             {medewerkers.map((num) => (
-              <option key={num.id}>{num.email}</option>
+              <option value={num} key={num.id}>{num.email}</option>
             ))}
         </SelectField>
+        <br/>
 
 
         <Label name="taken">
           Taken
         </Label>
-
-        <SelectField name="taken" multiple={true}>
+        {taken.map((num) => (
+          <>
+          <CheckboxField key={num.id} name="taken" id={num.id} value={num}/>
+          <Label htmlFor={num.id}>{num.taak}</Label>
+          </>
+        ))}
+        {/* <SelectField name="taken" multiple={true}>
           {taken.map((num) => (
             <option key={num.id}>{num.taak} - {num.extra}</option>
           ))}
-        </SelectField>
+        </SelectField> */}
+        <br/>
 
 
         <Label name="start">
           Start tijd
         </Label>
-        <Datetime name="start" value={start} onChange={date => setStart(date)} />  // Add a page for this form
+        <DatetimeLocalField key="dateStart" name="start"/>
+        {/* <Datetime name="start" value={start} onChange={date => setStart(date)} /> */}
+        <br/>
 
 
         <Label name="end">
           Eind tijd
         </Label>
-        <Datetime name="end" value={end} onChange={date => setEnd(date)} open={true}/>
+        <DatetimeLocalField key="dateEnd" name="end"/>
+        {/* <Datetime name="end" value={end} onChange={date => setEnd(date)} open={true}/> */}
+        <br/>
 
         <button>Add bezoek</button>
       </Form>
