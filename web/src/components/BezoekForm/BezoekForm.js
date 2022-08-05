@@ -1,4 +1,4 @@
-import { Form, Label, Submit, SelectField, FormError } from '@redwoodjs/forms'
+import { Form, Label, Submit, SelectField, CheckboxField, FormError } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
 import React, { useState } from 'react'
@@ -46,7 +46,6 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
   const [start, setStart] = useState(new Date());
   const [end, setEnd] = useState(new Date());
 
-
   const onSubmit = (input) => {
     console.log(input)
     // createBezoek({variables: { input }})
@@ -82,9 +81,10 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
         <Label name="taken">
           Taken
         </Label>
-        <SelectField name="taken" multiple={true} validation={{ required: true }}>
+
+        <SelectField name="taken" multiple={true}>
           {taken.map((num) => (
-            <option key={num.id}>{num.taak}, {num.extra}</option>
+            <option key={num.id}>{num.taak} - {num.extra}</option>
           ))}
         </SelectField>
 
@@ -92,13 +92,13 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
         <Label name="start">
           Start tijd
         </Label>
-        <Datetime value={start} onChange={date => setStart(date)} />
+        <Datetime name="start" value={start} onChange={date => setStart(date)} />  // Add a page for this form
 
 
         <Label name="end">
           Eind tijd
         </Label>
-        <Datetime value={end} onChange={date => setEnd(date)} open={true}/>
+        <Datetime name="end" value={end} onChange={date => setEnd(date)} open={true}/>
 
         <button>Add bezoek</button>
       </Form>

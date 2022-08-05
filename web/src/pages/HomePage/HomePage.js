@@ -20,8 +20,6 @@ const handleDateClick = (arg) => {
 
 const HomePage = () => {
 
-  const[modalOpen, setModalOpen] = useState(false);
-
   const onEventAdded = event => {
     let calendarApi = calendarRef.current.getApi();
     calendarApi.addEvent(event)
@@ -29,7 +27,7 @@ const HomePage = () => {
 
   return (
     <>
-      <button onClick={() => setModalOpen}>Bezoek toevoegen</button>
+      <button><Link to={routes.bezoek()}>Bezoek</Link></button>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -38,10 +36,6 @@ const HomePage = () => {
         ]}
         dateClick={handleDateClick}
       />
-
-      <BezoekFormCell/>
-
-
     </>
   )
 }
