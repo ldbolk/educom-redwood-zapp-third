@@ -8,27 +8,11 @@ const CREATE_BEZOEK_MUTATION = gql`
   mutation CreateBezoekMutation($input: CreateBezoekInput!) {
     createBezoek(input: $input) {
       id
-      klant
-      medewerker
-      taken
+      klantId
+      userId
+      taken{id}
       start
       end
-    }
-    taken: taaks {
-      id
-      taak
-      extra
-    }
-    klanten: klants {
-      id
-      naam
-      taken
-      adres
-    }
-    medewerkers: users {
-      id
-      name
-      email
     }
   }
 `
@@ -43,12 +27,13 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
   console.log(taken)
 
   const [createBezoek, {loading, error}] = useMutation(CREATE_BEZOEK_MUTATION)
-  const [start, setStart] = useState(new Date());
-  const [end, setEnd] = useState(new Date());
+
 
   const onSubmit = (input) => {
+    const castInput = Object.assign(input, {klantId: parseInt(input.klantId), userId: parseInt(input.userId), taken: parseInt(input.taken[0], 10)})
     console.log(input)
-    // createBezoek({variables: { input }})
+    console.log(input.taken[0])
+    createBezoek({variables: { input: castInput }})
   }
 
   return (
@@ -57,23 +42,23 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
       <Form onSubmit={onSubmit}>
         <FormError error={error}/>
 
-        <Label name="klant">
+        <Label name="klantId">
           Klant
         </Label>
-        <SelectField name="klant" validation={{ required: true}}>
+        <SelectField name="klantId" validation={{ required: true}}>
           {klanten.map((num) => (
-            <option key={num.id} value={num}>{num.naam}</option>
+            <option value={num.id} key={num.id}>{num.naam}</option>
           ))}
         </SelectField>
         <br/>
 
 
-        <Label name="medewerker">
+        <Label name="userId">
           Medewerker
         </Label>
-        <SelectField name="medewerker" validation={{ required: true }}>
+        <SelectField name="userId" validation={{ required: true }}>
             {medewerkers.map((num) => (
-              <option value={num} key={num.id}>{num.email}</option>
+              <option value={num.id} key={num.id}>{num.email}</option>
             ))}
         </SelectField>
         <br/>
@@ -84,7 +69,7 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
         </Label>
         {taken.map((num) => (
           <>
-          <CheckboxField key={num.id} name="taken" id={num.id} value={num}/>
+          <CheckboxField key={num.id} name="taken" id={num.id} value={num.id}/>
           <Label htmlFor={num.id}>{num.taak}</Label>
           </>
         ))}

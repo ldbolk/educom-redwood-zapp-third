@@ -5,6 +5,7 @@ export const schema = gql`
     userId: Int!
     klant: Klant!
     medewerker: User!
+    taken: [Taak]!
     start: DateTime!
     end: DateTime!
   }
@@ -16,6 +17,7 @@ export const schema = gql`
   input CreateBezoekInput {
     klantId: Int!
     userId: Int!
+    taken: [Int]
     start: DateTime!
     end: DateTime!
   }
