@@ -23,16 +23,19 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
     // console.log(element)
     vasteTaken.push(element.taken)
   });
-  console.log(vasteTaken)
-  console.log(taken)
+  console.log('vasteTaken = ', vasteTaken)
+  // console.log(taken)
 
   const [createBezoek, {loading, error}] = useMutation(CREATE_BEZOEK_MUTATION)
 
 
-  const onSubmit = (input) => {
-    const castInput = Object.assign(input, {klantId: parseInt(input.klantId), userId: parseInt(input.userId), taken: parseInt(input.taken[0], 10)})
-    console.log(input)
-    console.log(input.taken[0])
+  const onSubmit = (input) => { // Only send the id, or send the entire user/klant thing???
+    var bezoekTaken = []
+    input.taken.forEach(value => {
+      bezoekTaken.push(parseInt(value))
+    })
+    const castInput = Object.assign(input, {klantId: parseInt(input.klantId), userId: parseInt(input.userId), taken: bezoekTaken})
+    console.log(castInput)
     createBezoek({variables: { input: castInput }})
   }
 

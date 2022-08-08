@@ -27,4 +27,6 @@ export const Bezoek = {
     db.bezoek.findUnique({ where: { id: root.id } }).klant(),
   medewerker: (_obj, { root }) =>
     db.bezoek.findUnique({ where: { id: root.id } }).medewerker(),
+  taken: (_obj, { root }) =>
+    db.bezoek.findUnique({ where: { id: root.id }}).taak()
 }
