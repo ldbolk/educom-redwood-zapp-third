@@ -12,6 +12,7 @@ export const schema = gql`
 
   type Query {
     bezoeks: [Bezoek!]! @requireAuth
+    bezoek(id: Int!): Bezoek @requireAuth
   }
 
   input CreateBezoekInput {

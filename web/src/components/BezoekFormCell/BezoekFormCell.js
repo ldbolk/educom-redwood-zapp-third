@@ -31,6 +31,5 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ klanten, taken, medewerkers }) => {
-  console.log(klanten, taken, medewerkers)
   return <BezoekForm klanten={klanten} taken={taken} medewerkers={medewerkers}/>
 }

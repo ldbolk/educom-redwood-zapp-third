@@ -43,12 +43,21 @@ model Bezoek {
   userId                    Int
   klant                     Klant @relation(fields:[klantId], references: [id])
   medewerker                User @relation(fields:[userId], references: [id])
-  taken                     Taak[]
+  taken                     Taak @relation(fields:[taken], references: [id])
+  takenLijst                Taak[]
   start                     DateTime
   end                       DateTime
 
 
 }
+
+//model bezoekTaken {
+//  id                        Int @id @default(autoincrement())
+//  taakId                    Int
+//  bezoekId                  Int
+//  bezoek                    Bezoek @relation(fields:[bezoekId], references: [id])
+//  taak                      Taak @relation(fields:[taakId], references: [id])
+//}
 
 
 

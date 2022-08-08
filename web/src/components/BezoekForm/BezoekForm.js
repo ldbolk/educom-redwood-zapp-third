@@ -1,7 +1,10 @@
 import { Form, Label, Submit, SelectField, CheckboxField, FormError, DatetimeLocalField } from '@redwoodjs/forms'
+import { navigate, routes } from '@redwoodjs/router'
+
 import { useMutation } from '@redwoodjs/web'
 
 import React, { useState } from 'react'
+import { toast } from '@redwoodjs/web/toast'
 import Datetime from 'react-datetime'
 
 const CREATE_BEZOEK_MUTATION = gql`
@@ -10,7 +13,6 @@ const CREATE_BEZOEK_MUTATION = gql`
       id
       klantId
       userId
-      taken{id}
       start
       end
     }
@@ -26,15 +28,23 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
   console.log('vasteTaken = ', vasteTaken)
   // console.log(taken)
 
-  const [createBezoek, {loading, error}] = useMutation(CREATE_BEZOEK_MUTATION)
+  const [createBezoek, {loading, error}] = useMutation(CREATE_BEZOEK_MUTATION, {
+    onCompleted: () => {
+      toast.success('Klant created')
+      navigate(routes.home())
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    }
+  })
 
 
   const onSubmit = (input) => { // Only send the id, or send the entire user/klant thing???
-    var bezoekTaken = []
-    input.taken.forEach(value => {
-      bezoekTaken.push(parseInt(value))
-    })
-    const castInput = Object.assign(input, {klantId: parseInt(input.klantId), userId: parseInt(input.userId), taken: bezoekTaken})
+    // var bezoekTaken = []
+    // input.taken.forEach(value => {
+    //   bezoekTaken.push(parseInt(value))
+    // })
+    const castInput = Object.assign(input, {klantId: parseInt(input.klantId), userId: parseInt(input.userId)}) // Scaffolding didn't work properly so we have to manually cast the input
     console.log(castInput)
     createBezoek({variables: { input: castInput }})
   }
@@ -67,7 +77,7 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
         <br/>
 
 
-        <Label name="taken">
+        {/* <Label name="taken">
           Taken
         </Label>
         {taken.map((num) => (
@@ -75,13 +85,14 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
           <CheckboxField key={num.id} name="taken" id={num.id} value={num.id}/>
           <Label htmlFor={num.id}>{num.taak}</Label>
           </>
-        ))}
+        ))} */}
+
         {/* <SelectField name="taken" multiple={true}>
           {taken.map((num) => (
             <option key={num.id}>{num.taak} - {num.extra}</option>
           ))}
         </SelectField> */}
-        <br/>
+        {/* <br/> */}
 
 
         <Label name="start">
