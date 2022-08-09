@@ -2,6 +2,9 @@ import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
+import FullCalendar from "@fullcalendar/react"
+import dayGridPlugin from '@fullcalendar/daygrid'
+
 const DELETE_BEZOEK_MUTATION = gql`
   mutation DeleteBezoekMutation($id: Int!) {
     deleteBezoek(id: $id) {
@@ -12,6 +15,13 @@ const DELETE_BEZOEK_MUTATION = gql`
 
 
 const Bezoek = ({ bezoek }) => {
+  var castEvent = [];
+  castEvent.push({
+        id: bezoek.id,
+        title: bezoek.klant.naam,
+        start: Date.parse(bezoek.start),
+        end: Date.parse(bezoek.end)
+  })
   console.log(bezoek)
   const [deleteKlant] = useMutation(DELETE_BEZOEK_MUTATION, {
     onCompleted: () => {
@@ -37,6 +47,15 @@ const Bezoek = ({ bezoek }) => {
             Bezoek nr. {bezoek.id}'s Details
           </h2>
         </header>
+      </div>
+      <div style={{width: "40%"}}>
+        <FullCalendar
+        headerToolbar={false}
+        height="350px"
+        plugins={[dayGridPlugin]}
+        initialView="dayGridMonth"
+        events={castEvent}
+        />
       </div>
 
     </>

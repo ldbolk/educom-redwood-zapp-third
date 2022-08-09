@@ -6,6 +6,7 @@ export const QUERY = gql`
       id
       medewerker{name, email}
       klant{naam, adres, postcode}
+      taken{id, taak, extra}
       start
       end
     }

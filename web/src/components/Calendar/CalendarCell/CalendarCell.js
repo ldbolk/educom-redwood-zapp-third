@@ -6,6 +6,7 @@ export const QUERY = gql`
       id
       start
       end
+      taken{id}
       klant{naam, adres}
     }
   }
@@ -20,5 +21,6 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ bezoek }) => {
+  console.log(bezoek)
   return <Calendar bezoek={bezoek} />
 }

@@ -27,8 +27,8 @@ const Calendar = ({ bezoek }) => {
       }
     )
   });
-  console.log(bezoek)
-  console.log(events)
+  // console.log(bezoek)
+  // console.log(events)
 
   return (
     <>

@@ -1,12 +1,17 @@
 import { db } from 'src/lib/db'
 
 export const bezoeks = () => {
-  return db.bezoek.findMany()
+  return db.bezoek.findMany(
+    {
+      include: {taken: true}
+    }
+  )
 }
 
 export const bezoek = ({ id }) => {
   return db.bezoek.findUnique({
     where: { id },
+    include: {taken: true}
   })
 }
 
