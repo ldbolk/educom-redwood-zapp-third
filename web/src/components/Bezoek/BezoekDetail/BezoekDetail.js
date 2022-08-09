@@ -14,7 +14,7 @@ const DELETE_BEZOEK_MUTATION = gql`
 `
 
 
-const Bezoek = ({ bezoek }) => {
+const Bezoek = ({ bezoek, taken }) => {
   var castEvent = [];
   castEvent.push({
         id: bezoek.id,
@@ -22,7 +22,6 @@ const Bezoek = ({ bezoek }) => {
         start: Date.parse(bezoek.start),
         end: Date.parse(bezoek.end)
   })
-  console.log(bezoek)
   const [deleteKlant] = useMutation(DELETE_BEZOEK_MUTATION, {
     onCompleted: () => {
       toast.success('Bezoek deleted')
@@ -57,6 +56,82 @@ const Bezoek = ({ bezoek }) => {
         events={castEvent}
         />
       </div>
+      <div className="rw-segment">
+        <header className="rw-segment-header">
+          <h2 className="rw-heading rw-heading-secondary">
+            Klant
+          </h2>
+        </header>
+        <h2>
+          {bezoek.klant.naam}
+        </h2>
+        <p>{bezoek.klant.adres}</p>
+        <p>{bezoek.klant.postcode}</p>
+      </div>
+
+      <div className="rw-segment">
+        <header className="rw-segment-header">
+          <h2 className="rw-heading rw-heading-secondary">
+            Medewerker
+          </h2>
+        </header>
+        <h2>
+          {bezoek.medewerker.name}
+        </h2>
+        <p>{bezoek.medewerker.email}</p>
+      </div>
+
+      <div className="rw-segment rw-table-wrapper-responsive">
+      <table className="rw-table">
+        <thead>
+          <tr>
+            <th>#</th>
+
+            <th>Taak</th>
+
+            <th>Extra</th>
+
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {bezoek.taken.map((taak) => (
+            <tr key={taak.id}>
+              <td>i++ basically</td>
+
+              <td>{taak.taak}</td>
+
+              <td>{taak.extra}</td>
+
+              <td>
+                <nav className="rw-table-actions">
+
+                  <button
+                    type="button"
+                    title={'Delete taak ' + taak.id}
+                    className="rw-button rw-button-small rw-button-red"
+                    onClick={() => onDeleteClick(bezoek.id, taak.id)}
+                    >
+                    Delete
+                  </button>
+                </nav>
+              </td>
+            </tr>
+          ))}
+          <tr>
+            <td>i+1 basically</td>
+            <td>
+              <select>
+                {taken.map((num) => (
+                  <option key={num.id}>{num.taak}</option>
+                ))}
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     </>
   )

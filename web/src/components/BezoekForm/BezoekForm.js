@@ -40,11 +40,16 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
 
 
   const onSubmit = (input) => { // Only send the id, or send the entire user/klant thing???
-    // var bezoekTaken = []
-    // input.taken.forEach(value => {
-    //   bezoekTaken.push(parseInt(value))
-    // })
-    const castInput = Object.assign(input, {klantId: parseInt(input.klantId), userId: parseInt(input.userId)}) // Scaffolding didn't work properly so we have to manually cast the input
+    var bezoekTaken = []
+    input.taken.forEach(value => {
+      bezoekTaken.push(parseInt(value))
+    })
+    var selfInsert = {create: bezoekTaken}
+
+  // taken: {
+  //   create: [{ name: 'Magic' }, { name: 'Butterflies' }],
+  // }
+    const castInput = Object.assign(input, {klantId: parseInt(input.klantId), userId: parseInt(input.userId), taken: bezoekTaken}) // Scaffolding didn't work properly so we have to manually cast the input
     console.log(castInput)
     createBezoek({variables: { input: castInput }})
   }
@@ -77,7 +82,7 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
         <br/>
 
 
-        {/* <Label name="taken">
+        <Label name="taken">
           Taken
         </Label>
         {taken.map((num) => (
@@ -85,14 +90,14 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
           <CheckboxField key={num.id} name="taken" id={num.id} value={num.id}/>
           <Label htmlFor={num.id}>{num.taak}</Label>
           </>
-        ))} */}
+        ))}
 
         {/* <SelectField name="taken" multiple={true}>
           {taken.map((num) => (
             <option key={num.id}>{num.taak} - {num.extra}</option>
           ))}
         </SelectField> */}
-        {/* <br/> */}
+        <br/>
 
 
         <Label name="start">

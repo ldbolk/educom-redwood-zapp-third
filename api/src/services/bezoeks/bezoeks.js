@@ -16,8 +16,26 @@ export const bezoek = ({ id }) => {
 }
 
 export const createBezoek = ({ input }) => {
+  var bezoekTaken = []
+  input.taken.forEach(value => {
+    bezoekTaken.push({id: parseInt(value)})
+  })
+  var selfInsert = {connect: bezoekTaken}
   return db.bezoek.create({
-    data: input
+    data: {
+      klantId: input.klantId,
+      userId: input.userId,
+      taken: selfInsert,
+      start: input.start,
+      end: input.end
+    }
+  })
+}
+
+export const updateBezoek = ({ id, input }) => {
+  return db.klant.update({
+    data: input,
+    where: { id },
   })
 }
 
