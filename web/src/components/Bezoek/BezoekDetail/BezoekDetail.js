@@ -22,7 +22,7 @@ const Bezoek = ({ bezoek, taken }) => {
         start: Date.parse(bezoek.start),
         end: Date.parse(bezoek.end)
   })
-  const [deleteKlant] = useMutation(DELETE_BEZOEK_MUTATION, {
+  const [deleteBezoek] = useMutation(DELETE_BEZOEK_MUTATION, {
     onCompleted: () => {
       toast.success('Bezoek deleted')
       navigate(routes.home())
@@ -34,19 +34,48 @@ const Bezoek = ({ bezoek, taken }) => {
 
   const onDeleteClick = (id) => {
     if (confirm('Are you sure you want to delete bezoek ' + id + '?')) {
-      deleteKlant({ variables: { id } })
+      alert('deleted')
+      // deleteBezoek({ variables: { id } })
     }
+  }
+
+  const onDeleteTaakClick = (ids) => {
+    console.log(ids.id, ids.taakId)
+  }
+
+
+  const onAddTaak = (id) => {
+    console.log(id)
+  }
+
+  const onChangeKlant = () => {
+    console.log(bezoek.klant.id)
+  }
+
+  const onChangeMedewerker = () => {
+    console.log(bezoek.medewerker.id)
   }
 
   return (
     <>
+      <div>
+        <button
+          type="button"
+          title={'Delete boeking ' + bezoek.id}
+          className="rw-button rw-button-small rw-button-red"
+          onClick={() => onDeleteClick(bezoek.id)}
+          >
+          Delete
+        </button>
+      </div>
+
+
       <div className="rw-segment">
         <header className="rw-segment-header">
           <h2 className="rw-heading rw-heading-secondary">
             Bezoek nr. {bezoek.id}'s Details
           </h2>
         </header>
-      </div>
       <div style={{width: "40%"}}>
         <FullCalendar
         headerToolbar={false}
@@ -56,6 +85,8 @@ const Bezoek = ({ bezoek, taken }) => {
         events={castEvent}
         />
       </div>
+
+
       <div className="rw-segment">
         <header className="rw-segment-header">
           <h2 className="rw-heading rw-heading-secondary">
@@ -67,6 +98,15 @@ const Bezoek = ({ bezoek, taken }) => {
         </h2>
         <p>{bezoek.klant.adres}</p>
         <p>{bezoek.klant.postcode}</p>
+        <p>{bezoek.klant.woonplaats}</p>
+        <button
+          type="button"
+          title={'Add taak'}
+          className="rw-button rw-button-small rw-button-blue"
+          onClick={() => onChangeKlant()}
+          >
+          Selecteer Klant
+        </button>
       </div>
 
       <div className="rw-segment">
@@ -79,7 +119,17 @@ const Bezoek = ({ bezoek, taken }) => {
           {bezoek.medewerker.name}
         </h2>
         <p>{bezoek.medewerker.email}</p>
+        <button
+          type="button"
+          title={'Add taak'}
+          className="rw-button rw-button-small rw-button-blue"
+          onClick={() => onChangeMedewerker(bezoek.medewerker.id)}
+          >
+          Selecteer medewerker
+        </button>
       </div>
+
+      <br/><br/>
 
       <div className="rw-segment rw-table-wrapper-responsive">
       <table className="rw-table">
@@ -111,7 +161,7 @@ const Bezoek = ({ bezoek, taken }) => {
                     type="button"
                     title={'Delete taak ' + taak.id}
                     className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteClick(bezoek.id, taak.id)}
+                    onClick={() => onDeleteTaakClick({id: bezoek.id, taakId: taak.id})}
                     >
                     Delete
                   </button>
@@ -125,12 +175,26 @@ const Bezoek = ({ bezoek, taken }) => {
               <select>
                 {taken.map((num) => (
                   <option key={num.id}>{num.taak}</option>
-                ))}
+                  ))}
               </select>
             </td>
+            <td/>
+            <td>
+              <nav className="rw-table-actions">
+                <button
+                  type="button"
+                  title={'Add taak'}
+                  className="rw-button rw-button-small rw-button-blue"
+                  onClick={() => onAddTaak(num.id)}
+                  >
+                  Add
+                </button>
+              </nav>
+                    </td>
           </tr>
         </tbody>
       </table>
+    </div>
     </div>
 
     </>

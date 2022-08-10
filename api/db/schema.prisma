@@ -46,9 +46,10 @@ model Bezoek {
   taken                     Taak[]
   start                     DateTime
   end                       DateTime
-
-
 }
+
+
+// Merkte dat er een onzichtbare tussentabel automatisch wordt aangemaakt die niet in prisma te zien is
 
 //model TakenOnBezoek {
 //  taakId                    Int
@@ -57,6 +58,8 @@ model Bezoek {
 // taak                      Taak @relation(fields:[taakId], references: [id])
 //  @@id([taakId, bezoekId])
 //}
+
+
 
 
 

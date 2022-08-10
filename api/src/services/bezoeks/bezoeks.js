@@ -25,7 +25,7 @@ export const createBezoek = ({ input }) => {
     data: {
       klantId: input.klantId,
       userId: input.userId,
-      taken: selfInsert,
+      taken: selfInsert, // Creates link with taken by using the connect: {id: 1}, {id: ....}
       start: input.start,
       end: input.end
     }
@@ -33,7 +33,7 @@ export const createBezoek = ({ input }) => {
 }
 
 export const updateBezoek = ({ id, input }) => {
-  return db.klant.update({
+  return db.bezoek.update({
     data: input,
     where: { id },
   })

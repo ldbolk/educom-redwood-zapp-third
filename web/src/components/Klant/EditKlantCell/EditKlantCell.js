@@ -51,10 +51,11 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ klant, taken}) => {
+
   const [updateKlant, { loading, error }] = useMutation(UPDATE_KLANT_MUTATION, {
     onCompleted: () => {
       toast.success('Klant updated')
-      navigate(routes.klants())
+      navigate(routes.klanten())
     },
     onError: (error) => {
       toast.error(error.message)

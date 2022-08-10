@@ -9,6 +9,7 @@ import {
 
 const KlantForm = (props) => {
   const onSubmit = (data) => {
+    console.log(data)
     props.onSave(data, props?.klant?.id)
   }
 

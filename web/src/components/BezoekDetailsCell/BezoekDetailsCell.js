@@ -4,8 +4,8 @@ export const QUERY = gql`
   query BezoekQuery($id: Int!) {
     bezoek: bezoek(id: $id) {
       id
-      medewerker{name, email}
-      klant{naam, adres, postcode}
+      medewerker{id, name, email}
+      klant{id, naam, adres, postcode, woonplaats}
       taken{id, taak, extra}
       start
       end
