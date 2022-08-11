@@ -13,6 +13,14 @@ const DELETE_BEZOEK_MUTATION = gql`
   }
 `
 
+const UPDATE_BEZOEK_TAKEN_MUTATION = gql`
+  mutation UpdateBezoekTakenMutation($id: Int!, $input: UpdateBezoekTakenInput!) {
+    updateBezoekTaken(id: $id, input: $input) {
+      id
+    }
+  }
+`
+
 
 const Bezoek = ({ bezoek, taken }) => {
   var castEvent = [];
@@ -32,6 +40,15 @@ const Bezoek = ({ bezoek, taken }) => {
     },
   })
 
+  const [updateTaken] = useMutation(UPDATE_BEZOEK_TAKEN_MUTATION, {
+    onCompleted: () => {
+      toast.success('Taak toegevoegd')
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
   const onDeleteClick = (id) => {
     if (confirm('Are you sure you want to delete bezoek ' + id + '?')) {
       alert('deleted')
@@ -44,7 +61,10 @@ const Bezoek = ({ bezoek, taken }) => {
   }
 
 
-  const onAddTaak = (id) => {
+  const onAddTaak = () => {
+    const id = 3
+    const input = 5
+    updateTaken({variables: {id, input:{taken: input}}})
     console.log(id)
   }
 
@@ -185,7 +205,7 @@ const Bezoek = ({ bezoek, taken }) => {
                   type="button"
                   title={'Add taak'}
                   className="rw-button rw-button-small rw-button-blue"
-                  onClick={() => onAddTaak(num.id)}
+                  onClick={() => onAddTaak()}
                   >
                   Add
                 </button>

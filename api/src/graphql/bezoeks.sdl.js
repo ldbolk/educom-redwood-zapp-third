@@ -23,17 +23,13 @@ export const schema = gql`
     end: DateTime!
   }
 
-  input UpdateBezoekInput {
-    klantId: Int
-    userId: Int
+  input UpdateBezoekTakenInput {
     taken: Int
-    start: DateTime
-    end: DateTime
   }
 
   type Mutation {
     createBezoek(input: CreateBezoekInput!): Bezoek! @requireAuth
-    updateBezoek(id: Int!, input: UpdateBezoekInput!): Bezoek! @requireAuth
+    updateBezoekTaken(id: Int!, input: UpdateBezoekTakenInput!): Bezoek! @requireAuth
     deleteBezoek(id: Int!): Bezoek! @requireAuth
   }
 `

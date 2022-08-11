@@ -32,10 +32,13 @@ export const createBezoek = ({ input }) => {
   })
 }
 
-export const updateBezoek = ({ id, input }) => {
+export const updateBezoekTaken = ({ id, input }) => {
+  console.log(input.taken)
   return db.bezoek.update({
-    data: input,
     where: { id },
+    data: {
+      taken: {connect: {id: input.taken}}
+    },
   })
 }
 

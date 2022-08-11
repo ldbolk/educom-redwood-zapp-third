@@ -63,6 +63,8 @@ export const Success = ({ klant, taken}) => {
   })
 
   const onSave = (input, id) => {
+    console.log(input)
+    console.log(id)
     updateKlant({ variables: { id, input } })
   }
 
