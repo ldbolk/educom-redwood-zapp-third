@@ -31,6 +31,8 @@ const REMOVE_BEZOEK_TAKEN_MUTATION = gql`
 
 
 const Bezoek = ({ bezoek, taken }) => {
+  var selectedTaak = 0;
+
   var castEvent = [];
   castEvent.push({
         id: bezoek.id,
@@ -51,6 +53,7 @@ const Bezoek = ({ bezoek, taken }) => {
   const [updateTaken] = useMutation(UPDATE_BEZOEK_TAKEN_MUTATION, {
     onCompleted: () => {
       toast.success('Taak toegevoegd')
+      window.location.reload(false)
     },
     onError: (error) => {
       toast.error(error.message)
@@ -60,6 +63,7 @@ const Bezoek = ({ bezoek, taken }) => {
   const [removeTaken] = useMutation(REMOVE_BEZOEK_TAKEN_MUTATION, {
     onCompleted: () => {
       toast.success('Taak verwijderd')
+      window.location.reload(false)
     },
     onError: (error) => {
       toast.error(error.message)
@@ -69,7 +73,7 @@ const Bezoek = ({ bezoek, taken }) => {
   const onDeleteClick = (id) => {
     if (confirm('Are you sure you want to delete bezoek ' + id + '?')) {
       alert('deleted')
-      // deleteBezoek({ variables: { id } })
+      deleteBezoek({ variables: { id } })
     }
   }
 
@@ -81,11 +85,15 @@ const Bezoek = ({ bezoek, taken }) => {
   }
 
 
-  const onAddTaak = (input) => {
+  const onAddTaak = () => {
     const id = bezoek.id
-    // const input = 5
-    updateTaken({variables: {id, input:{taken: input}}})
-    console.log(id)
+    const input = selectedTaak
+    console.log(input)
+    if (input != 0) {
+      updateTaken({variables: {id, input:{taken: parseInt(input)}}})
+    } else {
+      toast.error("Please first select a taak")
+    }
   }
 
   const onChangeKlant = () => {
@@ -94,6 +102,10 @@ const Bezoek = ({ bezoek, taken }) => {
 
   const onChangeMedewerker = () => {
     console.log(bezoek.medewerker.id)
+  }
+
+  const handleChange = (e) => {
+    selectedTaak = e.target.value
   }
 
   return (
@@ -212,9 +224,9 @@ const Bezoek = ({ bezoek, taken }) => {
           <tr>
             <td>i+1 basically</td>
             <td>
-              <select>
+              <select onChange={handleChange}>
                 {taken.map((num) => (
-                  <option key={num.id}>{num.taak}</option>
+                  <option key={num.id} value={num.id}>{num.taak}</option>
                   ))}
               </select>
             </td>
@@ -230,7 +242,7 @@ const Bezoek = ({ bezoek, taken }) => {
                   Add
                 </button>
               </nav>
-                    </td>
+            </td>
           </tr>
         </tbody>
       </table>
