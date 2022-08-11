@@ -21,6 +21,14 @@ const UPDATE_BEZOEK_TAKEN_MUTATION = gql`
   }
 `
 
+const REMOVE_BEZOEK_TAKEN_MUTATION = gql`
+  mutation RemoveBezoekTakenMutation($id: Int!, $input: RemoveBezoekTakenInput!) {
+    removeBezoekTaken(id: $id, input: $input) {
+      id
+    }
+  }
+`
+
 
 const Bezoek = ({ bezoek, taken }) => {
   var castEvent = [];
@@ -49,6 +57,15 @@ const Bezoek = ({ bezoek, taken }) => {
     },
   })
 
+  const [removeTaken] = useMutation(REMOVE_BEZOEK_TAKEN_MUTATION, {
+    onCompleted: () => {
+      toast.success('Taak verwijderd')
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
   const onDeleteClick = (id) => {
     if (confirm('Are you sure you want to delete bezoek ' + id + '?')) {
       alert('deleted')
@@ -56,14 +73,17 @@ const Bezoek = ({ bezoek, taken }) => {
     }
   }
 
-  const onDeleteTaakClick = (ids) => {
-    console.log(ids.id, ids.taakId)
+  const onDeleteTaakClick = (input) => {
+    const id = bezoek.id
+    // const input = 2
+    removeTaken({variables: {id, input:{taken: input}}})
+    // console.log(input)
   }
 
 
-  const onAddTaak = () => {
-    const id = 3
-    const input = 5
+  const onAddTaak = (input) => {
+    const id = bezoek.id
+    // const input = 5
     updateTaken({variables: {id, input:{taken: input}}})
     console.log(id)
   }
@@ -181,7 +201,7 @@ const Bezoek = ({ bezoek, taken }) => {
                     type="button"
                     title={'Delete taak ' + taak.id}
                     className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteTaakClick({id: bezoek.id, taakId: taak.id})}
+                    onClick={() => onDeleteTaakClick(taak.id)}
                     >
                     Delete
                   </button>

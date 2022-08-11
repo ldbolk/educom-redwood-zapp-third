@@ -42,6 +42,15 @@ export const updateBezoekTaken = ({ id, input }) => {
   })
 }
 
+export const removeBezoekTaken = ({ id, input }) => {
+  return db.bezoek.update({
+    where: { id },
+    data: {
+      taken: {disconnect: {id: input.taken}}
+    },
+  })
+}
+
 export const deleteBezoek = ({ id }) => {
   return db.bezoek.delete({
     where: { id }
