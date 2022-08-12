@@ -23,6 +23,13 @@ export const updateKlant = ({ id, input }) => {
   })
 }
 
+export const updateKlantTaken = ({ id, input }) => {
+  return db.klant.update({
+    where: {id},
+    data: {taken: {connect: {id: input.taken}}},
+  })
+}
+
 export const deleteKlant = ({ id }) => {
   return db.klant.delete({
     where: { id },

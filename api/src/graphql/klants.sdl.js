@@ -27,9 +27,14 @@ export const schema = gql`
     woonplaats: String
   }
 
+  input UpdateKlantTakenInput {
+    taken: Int
+  }
+
   type Mutation {
     createKlant(input: CreateKlantInput!): Klant! @requireAuth
     updateKlant(id: Int!, input: UpdateKlantInput!): Klant! @requireAuth
+    updateKlantTaken(id: Int!, input: UpdateKlantTakenInput!): Klant! @requireAuth
     deleteKlant(id: Int!): Klant! @requireAuth
   }
 `

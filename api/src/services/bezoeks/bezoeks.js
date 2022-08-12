@@ -44,12 +44,8 @@ export const updateBezoekTaken = ({ id, input }) => {
 
 export const updateBezoekKlant = ({ id, input }) => {
   return db.bezoek.update({
-    where: {
-      id
-     },
-     data: {
-      klantId: input.klantId
-     }
+    where: {id},
+    data: {klantId: input.klantId}
   })
 }
 

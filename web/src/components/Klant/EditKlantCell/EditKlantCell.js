@@ -34,6 +34,14 @@ const UPDATE_KLANT_MUTATION = gql`
   }
 `
 
+const UPDATE_KLANT_TAKEN_MUTATION = gql`
+  mutation UpdateKlantTakenMutation($id: Int!, $input: UpdateKlantTakenInput!) {
+    updateKlantTaken(id: $id, input: $input) {
+      id
+    }
+  }
+`
+
 const MAX_STRING_LENGTH = 150
 
 const truncate = (text) => {
@@ -51,6 +59,8 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ klant, taken}) => {
+  var selectedTaak = 0;
+
 
   const [updateKlant, { loading, error }] = useMutation(UPDATE_KLANT_MUTATION, {
     onCompleted: () => {
@@ -62,10 +72,34 @@ export const Success = ({ klant, taken}) => {
     },
   })
 
+  const [updateTaken, { loading2, error2 }] = useMutation(UPDATE_KLANT_TAKEN_MUTATION, {
+    onCompleted: () => {
+      toast.success('Taak toegevoegd')
+    },
+    onError: (error2) => {
+      toast.error(error2.message)
+    }
+  })
+
   const onSave = (input, id) => {
     console.log(input)
     console.log(id)
     updateKlant({ variables: { id, input } })
+  }
+
+  const onAddTaak = () => {
+    const id = klant.id
+    const input = selectedTaak
+    console.log(input)
+    if (input != 0) {
+      updateTaken({variables: {id, input:{taken: parseInt(input)}}})
+    } else {
+      toast.error("Please first select a taak")
+    }
+  }
+
+  const handleChange = (e) => {
+    selectedTaak = e.target.value
   }
 
   return (
@@ -129,12 +163,25 @@ export const Success = ({ klant, taken}) => {
           <tr>
             <td>i+1 basically</td>
             <td>
-              <select>
+              <select onChange={handleChange}>
                 {taken.map((num) => (
-                  <option key={num.id}>{num.taak}</option>
+                  <option key={num.id} value={num.id}>{num.taak}</option>
                 ))}
               </select>
-              </td>
+            </td>
+            <td/>
+            <td>
+              <nav className="rw-table-actions">
+                <button
+                  type="button"
+                  title={'Add taak'}
+                  className="rw-button rw-button-small rw-button-blue"
+                  onClick={() => onAddTaak()}
+                  >
+                  Add
+                </button>
+              </nav>
+            </td>
           </tr>
         </tbody>
       </table>
