@@ -27,6 +27,14 @@ export const schema = gql`
     taken: Int
   }
 
+  input UpdateBezoekKlantInput {
+    klantId: Int
+  }
+
+  input UpdateBezoekMedewerkerInput {
+    userId: Int
+  }
+
   input RemoveBezoekTakenInput {
     taken: Int
   }
@@ -34,6 +42,8 @@ export const schema = gql`
   type Mutation {
     createBezoek(input: CreateBezoekInput!): Bezoek! @requireAuth
     updateBezoekTaken(id: Int!, input: UpdateBezoekTakenInput!): Bezoek! @requireAuth
+    updateBezoekKlant(id: Int!, input: UpdateBezoekKlantInput!): Bezoek! @requireAuth
+    updateBezoekMedewerker(id: Int!, input: UpdateBezoekMedewerkerInput!): Bezoek! @requireAuth
     removeBezoekTaken(id: Int!, input: RemoveBezoekTakenInput!): Bezoek! @requireAuth
     deleteBezoek(id: Int!): Bezoek! @requireAuth
   }

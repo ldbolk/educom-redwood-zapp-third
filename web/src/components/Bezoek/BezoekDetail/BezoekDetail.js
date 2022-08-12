@@ -1,6 +1,9 @@
+import { Form, FormError, Label, SelectField } from '@redwoodjs/forms'
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
+
+import {useState} from 'react'                                                            // TODO
 
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -21,6 +24,22 @@ const UPDATE_BEZOEK_TAKEN_MUTATION = gql`
   }
 `
 
+const UPDATE_BEZOEK_KLANT_MUTATION = gql`
+  mutation UpdateBezoekKlantMutation($id: Int!, $input: UpdateBezoekKlantInput!) {
+    updateBezoekKlant(id: $id, input: $input) {
+      id
+    }
+  }
+`
+
+const UPDATE_BEZOEK_MEDEWERKER_MUTATION = gql`
+  mutation UpdateBezoekMedewerkerMutation($id: Int!, $input: UpdateBezoekMedewerkerInput!) {
+    updateBezoekMedewerker(id: $id, input: $input) {
+      id
+    }
+  }
+`
+
 const REMOVE_BEZOEK_TAKEN_MUTATION = gql`
   mutation RemoveBezoekTakenMutation($id: Int!, $input: RemoveBezoekTakenInput!) {
     removeBezoekTaken(id: $id, input: $input) {
@@ -30,8 +49,10 @@ const REMOVE_BEZOEK_TAKEN_MUTATION = gql`
 `
 
 
-const Bezoek = ({ bezoek, taken }) => {
+const Bezoek = ({ bezoek, taken, klanten, medewerkers }) => {
   var selectedTaak = 0;
+  const [visible, setVisible] = useState(false)
+  const [visible2, setVisible2] = useState(false)
 
   var castEvent = [];
   castEvent.push({
@@ -40,6 +61,7 @@ const Bezoek = ({ bezoek, taken }) => {
         start: Date.parse(bezoek.start),
         end: Date.parse(bezoek.end)
   })
+
   const [deleteBezoek] = useMutation(DELETE_BEZOEK_MUTATION, {
     onCompleted: () => {
       toast.success('Bezoek deleted')
@@ -58,6 +80,26 @@ const Bezoek = ({ bezoek, taken }) => {
     onError: (error) => {
       toast.error(error.message)
     },
+  })
+
+  const [updateKlant, {loading, error}] = useMutation(UPDATE_BEZOEK_KLANT_MUTATION, {
+    onCompleted: () => {
+      toast.success('Klant veranderd')
+      window.location.reload(false)
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    }
+  })
+
+  const [updateMedewerker, {loading2, error2}] = useMutation(UPDATE_BEZOEK_MEDEWERKER_MUTATION, {
+    onCompleted: () => {
+      toast.success('Medewerker veranderd')
+      window.location.reload(false)
+    },
+    onError: (error2) => {
+      toast.error(error2.message)
+    }
   })
 
   const [removeTaken] = useMutation(REMOVE_BEZOEK_TAKEN_MUTATION, {
@@ -96,12 +138,16 @@ const Bezoek = ({ bezoek, taken }) => {
     }
   }
 
-  const onChangeKlant = () => {
-    console.log(bezoek.klant.id)
+  const onSubmitKlant = (input) => {
+    const id = bezoek.id
+    console.log(input.klantId)
+    updateKlant({variables: {id, input:{klantId: parseInt(input.klantId)}}})
   }
 
-  const onChangeMedewerker = () => {
-    console.log(bezoek.medewerker.id)
+  const onSubmitMedewerker = (input) => {
+    const id = bezoek.id
+    console.log(input.userId)
+    updateMedewerker({variables: {id, input:{userId: parseInt(input.userId)}}})
   }
 
   const handleChange = (e) => {
@@ -153,12 +199,32 @@ const Bezoek = ({ bezoek, taken }) => {
         <p>{bezoek.klant.woonplaats}</p>
         <button
           type="button"
-          title={'Add taak'}
+          title={'Change Klant'}
           className="rw-button rw-button-small rw-button-blue"
-          onClick={() => onChangeKlant()}
+          onClick={() => setVisible(!visible)}
           >
           Selecteer Klant
         </button>
+
+        {visible &&
+        <div>
+          <Form onSubmit={onSubmitKlant}>
+          <FormError error={error}/>
+
+          <Label name="klantId">
+            Klant
+          </Label>
+          <SelectField name="klantId" validation={{ required: true}}>
+            {klanten.map((num) => (
+              <option value={num.id} key={num.id}>{num.naam}</option>
+            ))}
+          </SelectField>
+          <br/>
+
+          <button>Klant veranderen</button>
+          </Form>
+        </div>
+        }
       </div>
 
       <div className="rw-segment">
@@ -173,12 +239,32 @@ const Bezoek = ({ bezoek, taken }) => {
         <p>{bezoek.medewerker.email}</p>
         <button
           type="button"
-          title={'Add taak'}
+          title={'Change Medewerker'}
           className="rw-button rw-button-small rw-button-blue"
-          onClick={() => onChangeMedewerker(bezoek.medewerker.id)}
+          onClick={() => setVisible2(!visible2)}
           >
-          Selecteer medewerker
+          Selecteer Medewerker
         </button>
+
+        {visible2 &&
+        <div>
+          <Form onSubmit={onSubmitMedewerker}>
+          <FormError error={error2}/>
+
+          <Label name="userId">
+            Medewerker
+          </Label>
+          <SelectField name="userId" validation={{ required: true}}>
+            {medewerkers.map((num) => (
+              <option value={num.id} key={num.id}>{num.name}</option>
+            ))}
+          </SelectField>
+          <br/>
+
+          <button>Medewerker veranderen</button>
+          </Form>
+        </div>
+        }
       </div>
 
       <br/><br/>

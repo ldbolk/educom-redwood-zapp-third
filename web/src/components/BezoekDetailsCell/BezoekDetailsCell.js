@@ -15,6 +15,15 @@ export const QUERY = gql`
       taak
       extra
     }
+    klanten: klants {
+      id
+      naam
+      adres
+    }
+    medewerkers: users {
+      id
+      name
+    }
   }
 `
 
@@ -26,7 +35,7 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error.message}</div>
 )
 
-export const Success = ({ bezoek, taken }) => {
+export const Success = ({ bezoek, taken, klanten, medewerkers }) => {
   console.log(bezoek)
-  return <BezoekDetail bezoek={bezoek} taken={taken}/>
+  return <BezoekDetail bezoek={bezoek} taken={taken} klanten={klanten} medewerkers={medewerkers}/>
 }

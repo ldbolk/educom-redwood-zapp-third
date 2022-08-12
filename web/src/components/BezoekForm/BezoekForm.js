@@ -44,7 +44,7 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
     input.taken.forEach(value => {
       bezoekTaken.push(parseInt(value))
     })
-    var selfInsert = {create: bezoekTaken}
+    // var selfInsert = {create: bezoekTaken}
 
   // taken: {
   //   create: [{ name: 'Magic' }, { name: 'Butterflies' }],
