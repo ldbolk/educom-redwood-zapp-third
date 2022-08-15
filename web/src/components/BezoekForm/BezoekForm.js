@@ -3,9 +3,12 @@ import { navigate, routes } from '@redwoodjs/router'
 
 import { useMutation } from '@redwoodjs/web'
 
+import Parent from '../Multi-step-form/parent'
+
 import React, { useState } from 'react'
 import { toast } from '@redwoodjs/web/toast'
 import Datetime from 'react-datetime'
+import BezoekFormCell from '../BezoekFormCell'
 
 const CREATE_BEZOEK_MUTATION = gql`
   mutation CreateBezoekMutation($input: CreateBezoekInput!) {
@@ -30,7 +33,7 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
 
   const [createBezoek, {loading, error}] = useMutation(CREATE_BEZOEK_MUTATION, {
     onCompleted: () => {
-      toast.success('Klant created')
+      toast.success('Bezoek created')
       navigate(routes.home())
     },
     onError: (error) => {
@@ -51,73 +54,76 @@ const BezoekForm = ({taken, klanten, medewerkers}) => {
   // }
     const castInput = Object.assign(input, {klantId: parseInt(input.klantId), userId: parseInt(input.userId), taken: bezoekTaken}) // Scaffolding didn't work properly so we have to manually cast the input
     console.log(castInput)
-    createBezoek({variables: { input: castInput }})
+    console.log(input)
+    // createBezoek({variables: { input: castInput }})
   }
 
   return (
 
-    <div>
-      <Form onSubmit={onSubmit}>
-        <FormError error={error}/>
+    <Parent/>
 
-        <Label name="klantId">
-          Klant
-        </Label>
-        <SelectField name="klantId" validation={{ required: true}}>
-          {klanten.map((num) => (
-            <option value={num.id} key={num.id}>{num.naam}</option>
-          ))}
-        </SelectField>
-        <br/>
+    // <div>
+    //   <Form onSubmit={onSubmit}>
+    //     <FormError error={error}/>
 
-
-        <Label name="userId">
-          Medewerker
-        </Label>
-        <SelectField name="userId" validation={{ required: true }}>
-            {medewerkers.map((num) => (
-              <option value={num.id} key={num.id}>{num.email}</option>
-            ))}
-        </SelectField>
-        <br/>
+    //     <Label name="klantId">
+    //       Klant
+    //     </Label>
+    //     <SelectField name="klantId" validation={{ required: true}}>
+    //       {klanten.map((num) => (
+    //         <option value={num.id} key={num.id}>{num.naam}</option>
+    //       ))}
+    //     </SelectField>
+    //     <br/>
 
 
-        <Label name="taken">
-          Taken
-        </Label>
-        {taken.map((num) => (
-          <>
-          <CheckboxField key={num.id} name="taken" id={num.id} value={num.id}/>
-          <Label htmlFor={num.id}>{num.taak}</Label>
-          </>
-        ))}
-
-        {/* <SelectField name="taken" multiple={true}>
-          {taken.map((num) => (
-            <option key={num.id}>{num.taak} - {num.extra}</option>
-          ))}
-        </SelectField> */}
-        <br/>
+    //     <Label name="userId">
+    //       Medewerker
+    //     </Label>
+    //     <SelectField name="userId" validation={{ required: true }}>
+    //         {medewerkers.map((num) => (
+    //           <option value={num.id} key={num.id}>{num.email}</option>
+    //         ))}
+    //     </SelectField>
+    //     <br/>
 
 
-        <Label name="start">
-          Start tijd
-        </Label>
-        <DatetimeLocalField key="dateStart" name="start"/>
-        {/* <Datetime name="start" value={start} onChange={date => setStart(date)} /> */}
-        <br/>
+    //     <Label name="taken">
+    //       Taken
+    //     </Label>
+    //     {taken.map((num) => (
+    //       <>
+    //       <CheckboxField key={num.id} name="taken" id={num.id} value={num.id}/>
+    //       <Label htmlFor={num.id}>{num.taak}</Label>
+    //       </>
+    //     ))}
+
+    //     {/* <SelectField name="taken" multiple={true}>
+    //       {taken.map((num) => (
+    //         <option key={num.id}>{num.taak} - {num.extra}</option>
+    //       ))}
+    //     </SelectField> */}
+    //     <br/>
 
 
-        <Label name="end">
-          Eind tijd
-        </Label>
-        <DatetimeLocalField key="dateEnd" name="end"/>
-        {/* <Datetime name="end" value={end} onChange={date => setEnd(date)} open={true}/> */}
-        <br/>
+    //     <Label name="start">
+    //       Start tijd
+    //     </Label>
+    //     <DatetimeLocalField key="dateStart" name="start"/>
+    //     {/* <Datetime name="start" value={start} onChange={date => setStart(date)} /> */}
+    //     <br/>
 
-        <button>Add bezoek</button>
-      </Form>
-    </div>
+
+    //     <Label name="end">
+    //       Eind tijd
+    //     </Label>
+    //     <DatetimeLocalField key="dateEnd" name="end"/>
+    //     {/* <Datetime name="end" value={end} onChange={date => setEnd(date)} open={true}/> */}
+    //     <br/>
+
+    //     <button>Add bezoek</button>
+    //   </Form>
+    // </div>
 )}
 
 export default BezoekForm
