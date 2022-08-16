@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PeopleDetailsCell from './PeopleDetailsCell'
 import Success from './Success'
-import TakenDetailsCell from './TakenDetailsCell'
+import SpecificKlantCell from './SpecificKlantCell'
 import Confirmation from './Confirmation'
 import TimeDate from './TimeDate'
 
@@ -35,10 +35,6 @@ export default class Parent extends Component {
     this.setState({ taken: taken})
   }
 
-  handleKlant = input => e => {
-    this.vasteTaken = klant.taken
-  }
-
 
   render() {
     const { step } = this.state;
@@ -57,12 +53,12 @@ export default class Parent extends Component {
         )
       case 2:
         return(
-          <TakenDetailsCell
+          <SpecificKlantCell
+            id={parseInt(values.klantId)}
             prevStep={ this.prevStep }
             nextStep={ this.nextStep }
             handleChange={ this.handleChange }
             handleTaken={ this.handleTaken }
-            vasteTaken={ this.vasteTaken }
             values={ values }
           />
         )

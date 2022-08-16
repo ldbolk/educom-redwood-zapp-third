@@ -1,9 +1,9 @@
 import React from 'react'
 import { Form, Label, CheckboxField} from '@redwoodjs/forms'
 
-const TakenDetails = ({ nextStep, prevStep, handleChange, values, taken, handleTaken, vasteTaken }) => {
+const TakenDetails = ({klant, nextStep, prevStep, values, taken, handleTaken, vasteTaken }) => {
   console.log(values)
-  console.log(vasteTaken)
+  console.log('details - ', vasteTaken)
   var takenArray = []
 
   const addTaken = (e) => {
@@ -32,6 +32,17 @@ const TakenDetails = ({ nextStep, prevStep, handleChange, values, taken, handleT
 
   return (
     <div>
+      <div>
+        <p>
+          {klant.naam} heeft als vaste taken:
+          <br/>
+          {vasteTaken.map((vast) => (
+            <div>
+              - {vast.taak}
+            </div>
+          ))}
+        </p>
+      </div>
       <Form>
       <Label name="taken" key="takenLabel">Taken</Label>
         {taken.map((num) => (

@@ -18,7 +18,21 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error.message}</div>
 )
 
-export const Success = ({ taken, nextStep, prevStep, handleChange, values, handleTaken, vasteTaken }) => {
-  console.log(taken)
-  return <TakenDetails taken={taken} nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={values} handleTaken={handleTaken} vasteTaken={vasteTaken}/>
+export const Success = ({klant, taken, nextStep, prevStep, handleChange, values, handleTaken }) => {
+  const klantTaken = []
+  const vasteTaken = []
+
+  klant.taken.forEach(taak => {
+    klantTaken.push(taak.id)
+  })
+
+  taken.forEach(taak => {
+    if(klantTaken.includes(taak.id)) {
+      vasteTaken.push(taak)
+    }
+  })
+
+  console.log('vasteTaken - ', vasteTaken)
+
+  return <TakenDetails klant={klant} taken={taken} vasteTaken={vasteTaken} nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={values} handleTaken={handleTaken}/>
 }

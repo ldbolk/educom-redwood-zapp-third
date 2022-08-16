@@ -1,6 +1,5 @@
 import React from 'react'
 import { Form, Label, Submit, SelectField, CheckboxField, FormError, DatetimeLocalField } from '@redwoodjs/forms'
-import { useQuery } from '@redwoodjs/web'
 
 
 const PeopleDetails = ({ nextStep, handleChange, values, medewerkers, klanten }) => {
@@ -11,21 +10,16 @@ const PeopleDetails = ({ nextStep, handleChange, values, medewerkers, klanten })
     nextStep()
   }
 
-  const e = (f) => {
-    console.log(f.target.value)
-    // TODO: Query for klant to send vastetaken to taken to autocheck the vastetaken
-  }
-
   return (
     <div>
       <Form>
         <Label name="klantId">
           Klant
         </Label>
-        <SelectField name="klantId" validation={{ required: true}} onChange={e} defaultValue={''}>
+        <SelectField name="klantId" validation={{ required: true}} onChange={handleChange('klantId')} defaultValue={''}>
           <option value="" disabled>Selecteer de klant</option>
             {klanten.map((num) => (
-              <option onChange={e} placeholder={"Select"} value={num.id} key={num.id} >{num.naam}</option>
+              <option placeholder={"Select"} value={num.id} key={num.id} >{num.naam}</option>
             ))}
         </SelectField>
         <br/>
