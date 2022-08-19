@@ -9,12 +9,17 @@ import Routes from 'src/Routes'
 import './scaffold.css'
 import './index.css'
 
+import { ThemeProvider } from 'theme-ui'
+import theme from './theme'
+
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
       <AuthProvider type="dbAuth">
         <RedwoodApolloProvider>
-          <Routes />
+          <ThemeProvider theme={theme}>
+            <Routes />
+          </ThemeProvider>
         </RedwoodApolloProvider>
       </AuthProvider>
     </RedwoodProvider>
